@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.changge.auth.mapper.EmployeeRoleMapper">
+    <!--保存对象-->
+    <insert id="insert" parameterType="EmployeeRole" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_auth_employee_role(
+                            employee_id,
+                            role_id
+        ) values(
+                                   #{employee_id},
+                                   #{role_id}
+        )
+    </insert>
+    <!--删除对象-->
+    <delete id="delete" parameterType="long">
+        delete from t_auth_employee_role where id = #{id}
+    </delete>
+
+    <!--更新对象-->
+    <update id="update" parameterType="EmployeeRole">
+        update t_auth_employee_role
+        set
+
+                            employee_id =#{employee_id},
+                            role_id =#{role_id}
+        where id = #{id}
+    </update>
+    <!--加载对象-->
+    <select id="queryById" resultType="EmployeeRole" parameterType="long">
+        select * from t_auth_employee_role where id = #{id}
+    </select>
+    <!--加载所有对象-->
+    <select id="queryAll" resultType="EmployeeRole">
+        select * from t_auth_employee_role
+    </select>
+    <!--//查询总数=参数（查询对象），返回值：long-->
+    <select id="queryTotal" parameterType="EmployeeRoleQuery" resultType="long">
+        select count(*) from t_auth_employee_role
+        <include refid="whereSql"/>
+    </select>
+    <!--//查询当前页数据=参数（查询对象），返回值:List-->
+    <select id="queryPage" parameterType="EmployeeRoleQuery" resultType="EmployeeRole">
+        select * from t_auth_employee_role
+        <include refid="whereSql"/>
+        limit #{start},#{pageSize}
+    </select>
+
+
+    <sql id="whereSql">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (name like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <!--//批量删除-->
+    <delete id="batchDelete" parameterType="arraylist">
+        delete from t_auth_employee_role where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.changge.auth.domain.EmployeeRole">
+        <id column="id" property="id" />
+        <result column="employee_id" property="employeeId" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, employee_id AS employeeId, role_id AS roleId
+    </sql>
+
+</mapper>

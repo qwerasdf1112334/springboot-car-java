@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.changge.org.mapper.ExcelMapper">
+    <!--保存对象-->
+    <insert id="insert" parameterType="ExcelEmployee" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_org_employee(
+                            username,
+                            password,
+                            email,
+                            headImage,
+                            age,
+                            department_id,
+                            phone
+        ) values(
+                                   #{username},
+                                   #{password},
+                                   #{email},
+                                   #{headImage},
+                                   #{age},
+                                   #{department.id},
+                                   #{phone}
+        )
+    </insert>
+    <insert id="batchInsertEmployees" parameterType="java.util.List">
+        INSERT INTO `t_org_employee` (`username`, `password`, `email`, `headImage`, `age`, `department_id`, `phone`)
+        VALUES
+        <foreach collection="list" item="employee" separator=",">
+            (#{employee.username}, #{employee.password}, #{employee.email}, #{employee.headImage}, #{employee.age}, #{employee.department.id}, #{employee.phone})
+        </foreach>
+    </insert>
+    <!--删除对象-->
+    <delete id="delete" parameterType="long">
+        delete from t_org_employee where id = #{id}
+    </delete>
+
+    <!--更新对象-->
+    <update id="update" parameterType="ExcelEmployee">
+        update t_org_employee
+        set
+
+                            username =#{username},
+                            password =#{password},
+                            email =#{email},
+                            headImage =#{headImage},
+                            age =#{age},
+                            department_id =#{department.id}
+                             phone=#{phone}
+        where id = #{id}
+    </update>
+    <!--加载对象-->
+    <select id="queryById" resultType="ExcelEmployee" parameterType="long">
+        select * from t_org_employee where id = #{id}
+    </select>
+    <!--加载所有对象-->
+    <select id="queryAll" resultMap="BaseResultMap">
+                SELECT
+                e.id,
+                e.username,
+                e.password,
+                e.email,
+                e.headImage,
+                e.age,
+                d.`name` dname,
+                phone
+
+
+                     FROM
+                `t_org_employee` e
+                LEFT JOIN t_org_department d ON e.department_id = d.id
+    </select>
+    <!--//查询总数=参数（查询对象），返回值：long-->
+    <select id="queryTotal" parameterType="ExcelEmployeeQuery" resultType="long">
+        select count(*) from t_org_employee
+        <include refid="whereSql"/>
+    </select>
+    <!--//查询当前页数据=参数（查询对象），返回值:List-->
+    <select id="queryPage" parameterType="ExcelEmployeeQuery" resultMap="BaseResultMap">
+        select * from t_org_employee
+        <include refid="whereSql"/>
+        limit #{start},#{pageSize}
+    </select>
+    <select id="quertByName" resultMap="BaseResultMap">
+        select * from t_org_employee where username =#{username}
+    </select>
+
+
+    <sql id="whereSql">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (username like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <!--//批量删除-->
+    <delete id="batchDelete" parameterType="arraylist">
+        delete from t_org_employee where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.changge.org.domain.ExcelEmployee">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="headImage" property="headImage" />
+        <result column="age" property="age" />
+        <association property="department" javaType="department">
+            <id column="id" property="id"></id>
+            <result column="dname" property="name"></result>
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, email, headImage, age, department_id AS departmentId
+    </sql>
+</mapper>

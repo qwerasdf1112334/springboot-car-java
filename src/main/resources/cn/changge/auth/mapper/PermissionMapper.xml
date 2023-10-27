@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.changge.auth.mapper.PermissionMapper">
+    <!--保存对象-->
+    <insert id="insert" parameterType="Permission" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_auth_permission(
+                            name,
+                            url,
+                            descs,
+                            sn,
+                            parent_id
+        ) values(
+                                   #{name},
+                                   #{url},
+                                   #{descs},
+                                   #{sn},
+                                   #{parent.id}
+        )
+    </insert>
+    <!--删除对象-->
+    <delete id="delete" parameterType="long">
+        delete from t_auth_permission where id = #{id}
+    </delete>
+
+    <!--更新对象-->
+    <update id="update" parameterType="Permission">
+        update t_auth_permission
+        set
+
+                            name =#{name},
+                            url =#{url},
+                            descs =#{descs},
+                            sn =#{sn},
+                            parent_id =#{parent.id}
+        where id = #{id}
+    </update>
+    <!--加载对象-->
+    <select id="queryById" resultType="Permission" parameterType="long">
+        select * from t_auth_permission where id = #{id}
+    </select>
+    <!--加载所有对象-->
+    <select id="queryAll" resultMap="BaseResultMap">
+                SELECT
+                    p.* ,
+                    e.id eid,
+                    e.`name` ename,
+                    e.sn esn
+
+                FROM
+                    t_auth_permission p
+                    LEFT JOIN t_auth_permission e
+                    ON p.id=e.parent_id
+                WHERE
+                    p.parent_id IS NULL
+    </select>
+    <!--//查询总数=参数（查询对象），返回值：long-->
+    <select id="queryTotal" parameterType="PermissionQuery" resultType="long">
+        select count(*) from t_auth_permission p
+        left JOIN t_auth_permission e
+        on p.parent_id = e.id
+        <include refid="whereSql"/>
+    </select>
+    <!--//查询当前页数据=参数（查询对象），返回值:List-->
+    <select id="queryPage" parameterType="PermissionQuery" resultMap="BaseResultMap">
+        select p.*,e.id eid,e.name ename from t_auth_permission p
+        left join t_auth_permission e
+        on p.parent_id=e.id
+        <include refid="whereSql"/>
+        limit #{start},#{pageSize}
+    </select>
+    <select id="queryPermByuserId" resultType="String">
+                SELECT
+                    rp.permission_sn
+                FROM
+                    t_auth_role_permission rp
+                LEFT JOIN t_auth_employee_role er
+                    ON er.role_id=rp.role_id
+                WHERE
+                    er.employee_id=#{id}
+    </select>
+
+
+    <sql id="whereSql">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (p.`name` like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <!--//批量删除-->
+    <delete id="batchDelete" parameterType="arraylist">
+        delete from t_auth_permission where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAll">
+        delete from t_auth_permission
+    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Permission">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="descs" property="descs" />
+        <result column="sn" property="sn" />
+        <association property="parent" javaType="permission">
+            <id column="eid" property="id"></id>
+            <result column="ename" property="name"></result>
+        </association>
+        <collection property="children" ofType="permission">
+            <id column="eid" property="id"></id>
+            <result column="ename" property="name"></result>
+            <result column="esn" property="sn"></result>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, url, descs, sn, parent_id AS parentId
+    </sql>
+
+</mapper>

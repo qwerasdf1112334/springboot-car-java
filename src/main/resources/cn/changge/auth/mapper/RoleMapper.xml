@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.changge.auth.mapper.RoleMapper">
+    <!--保存对象-->
+    <insert id="insert" parameterType="Role" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_auth_role(
+                            name,
+                            sn
+        ) values(
+                                   #{name},
+                                   #{sn}
+        )
+    </insert>
+    <insert id="roleAuth">
+        insert into  t_auth_role_permission(role_id,permission_sn)
+        values
+        <foreach collection="PermissionList" separator="," item="p">
+            ( #{roleId},#{p.sn})
+        </foreach>
+    </insert>
+    <!--删除对象-->
+    <delete id="delete" parameterType="long">
+        delete from t_auth_role where id = #{id}
+    </delete>
+
+    <!--更新对象-->
+    <update id="update" parameterType="Role">
+        update t_auth_role
+        set
+
+                            name =#{name},
+                            sn =#{sn}
+        where id = #{id}
+    </update>
+    <!--加载对象-->
+    <select id="queryById" resultType="Role" parameterType="long">
+        select * from t_auth_role where id = #{id}
+    </select>
+    <!--加载所有对象-->
+    <select id="queryAll" resultType="Role">
+        select * from t_auth_role
+    </select>
+    <!--//查询总数=参数（查询对象），返回值：long-->
+    <select id="queryTotal" parameterType="RoleQuery" resultType="long">
+        select count(*) from t_auth_role
+        <include refid="whereSql"/>
+    </select>
+    <!--//查询当前页数据=参数（查询对象），返回值:List-->
+    <select id="queryPage" parameterType="RoleQuery" resultType="Role">
+        select * from t_auth_role
+        <include refid="whereSql"/>
+        limit #{start},#{pageSize}
+    </select>
+    <select id="queryRolePermissionIds" resultType="java.lang.Long">
+        select p.id
+        from t_auth_role_permission rp
+        left join t_auth_permission p
+        on rp.permission_sn=p.sn
+        where rp.role_id=#{id}
+    </select>
+
+
+    <sql id="whereSql">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (name like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <!--//批量删除-->
+    <delete id="batchDelete" parameterType="arraylist">
+        delete from t_auth_role where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteAll">
+        delete from t_auth_role_permission where role_id = #{roleId}
+    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.changge.auth.domain.Role">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sn" property="sn" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, sn
+    </sql>
+
+</mapper>

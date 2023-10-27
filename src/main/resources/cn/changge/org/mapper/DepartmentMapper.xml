@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.changge.org.mapper.DepartmentMapper">
+    <resultMap id="depMap" type="Department">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="intro" column="intro"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="path" column="path"></result>
+        <result property="state" column="state"></result>
+        <association property="manager" javaType="employee">
+            <id property="id" column="eid"></id>
+            <result property="username" column="ename"></result>
+        </association>
+        <association property="parent" javaType="department">
+            <id property="id" column="pid"></id>
+            <result property="name" column="pname"></result>
+        </association>
+        <collection property="children" ofType="department">
+            <id property="id" column="cid"></id>
+            <result property="name" column="cname"></result>
+        </collection>
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+         insert into t_org_department(
+            `name`,
+            `intro`,
+            `create_time`,
+            `update_time`,
+            `manager_id`,
+            `parent_id`,
+            `path`,
+            `state`
+        )values (
+            #{name},
+            #{intro},
+            Now(),
+            Now(),
+            #{manager.id},
+            #{parent.id},
+            #{path},
+            #{state}
+        )
+
+    </insert>
+    <update id="update">
+            update t_org_department set
+            `name` = #{name},
+            `intro` = #{intro},
+
+            `update_time` =   Now(),
+            `manager_id` = #{manager.id},
+            `parent_id` = #{parent.id},
+            `path` = #{path},
+            `state` = #{state}
+        where
+            `id` = #{id}
+
+    </update>
+    <delete id="delete">
+        delete from t_org_department where id=#{id}
+    </delete>
+    <delete id="batchDelete">
+        delete from t_org_department where `id` in
+        <foreach item="id" collection="ids" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="queryById" resultMap="depMap">
+        select * from t_org_department
+        where id=#{id}
+    </select>
+
+    <select id="queryAll" resultMap="depMap">
+        select d.* ,
+                e.id as eid,
+                e.username as ename,
+                p.id as pid,
+                p.name as pname
+        from t_org_department d
+        left join t_org_employee e on  e.id = d.manager_id
+        left join t_org_department p on p.id=d.parent_id
+    </select>
+    <select id="queryTotal" resultType="java.lang.Long">
+        select count(*) from   t_org_department d
+        left join t_org_employee e on  e.id = d.manager_id
+        left join t_org_department p on p.id=d.parent_id
+        <include refid="pagelist"></include>
+    </select>
+    <select id="queryPage" resultMap="depMap">
+        select d.* ,
+                e.id as eid,
+                e.username as ename,
+                p.id as pid,
+                p.name as pname
+        from t_org_department d
+        left join t_org_employee e on  e.id = d.manager_id
+        left join t_org_department p on p.id=d.parent_id
+        <include refid="pagelist"></include>
+        limit #{start},#{pageSize}
+    </select>
+    <select id="getTree" resultMap="depMap">
+        SELECT
+            p.*,
+            c.id cid,
+            c.parent_id cpid,
+            c.`name` cname
+        FROM
+            t_org_department p
+            left join t_org_department c
+            on c.parent_id = p.id
+        WHERE
+            p.parent_id IS NULL
+    </select>
+    <sql id="pagelist">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                d.name like concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+</mapper>
