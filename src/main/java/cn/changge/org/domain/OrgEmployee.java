@@ -1,6 +1,9 @@
 package cn.changge.org.domain;
 
 import cn.changge.base.domain.BaseDomain;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,85 +17,40 @@ import java.util.Date;
  * @author wangxi
  * @since 2023-10-13
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrgEmployee extends BaseDomain {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private String username;
+    private String realname;
     private String password;
     private String email;
-    private String headImage;
+    private String phone;
+    private String salt;
+    private Integer sex;
+    private String logininfoid;
+    private Integer state;
+
+//    id
+//            username
+//    real_name
+//            email
+//    phone
+//            salt
+//    password
+//            age
+//    sex
+//            state
+//    department_id
+//            logininfo_id
+
+    //  private String headImage;
+
     private Integer age;
-    private Long departmentId;
+    private Department department;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHeadImage() {
-        return headImage;
-    }
-
-    public void setHeadImage(String headImage) {
-        this.headImage = headImage;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    @Override
-    public String toString() {
-        return "OrgEmployee{" +
-        ", id=" + id +
-        ", username=" + username +
-        ", password=" + password +
-        ", email=" + email +
-        ", headImage=" + headImage +
-        ", age=" + age +
-        ", departmentId=" + departmentId +
-        "}";
-    }
 }

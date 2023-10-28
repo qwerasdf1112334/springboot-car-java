@@ -1,6 +1,7 @@
 package cn.changge.org.domain;
 
 import cn.changge.base.domain.BaseDomain;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,10 @@ public class Employee extends BaseDomain {
     private String username;
     private String password;
     private String email;
+
+
     private String headImage;
+
     private Integer age;
     private Department department;
 

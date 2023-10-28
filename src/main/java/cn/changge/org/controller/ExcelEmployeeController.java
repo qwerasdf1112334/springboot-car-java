@@ -7,6 +7,7 @@ import cn.changge.base.utils.AjaxResult;
 import cn.changge.base.utils.ExcelUtil;
 import cn.changge.org.domain.ExcelEmployee;
 import cn.changge.org.service.IExcelService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/excel")
+@Api("excel导入导出页面")
 public class ExcelEmployeeController {
     @Autowired
     private IExcelService service;

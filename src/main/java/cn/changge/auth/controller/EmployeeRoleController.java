@@ -6,6 +6,7 @@ import cn.changge.auth.query.EmployeeRoleQuery;
 import cn.changge.base.annotation.ChangGePermission;
 import cn.changge.base.utils.AjaxResult;
 import cn.changge.base.utils.PageInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/employeeRole")
 @ChangGePermission(name = "员工和角色关系表")
+@Api("员工和角色关系表")
 public class EmployeeRoleController {
     @Autowired
     public IEmployeeRoleService employeeRoleService;

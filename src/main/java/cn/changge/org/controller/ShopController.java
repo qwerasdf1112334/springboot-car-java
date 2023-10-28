@@ -1,39 +1,34 @@
 package cn.changge.org.controller;
 
-import cn.changge.base.annotation.ChangGePermission;
-import cn.changge.org.service.IOrgEmployeeService;
-import cn.changge.org.domain.OrgEmployee;
-import cn.changge.org.query.OrgEmployeeQuery;
+import cn.changge.org.service.IShopService;
+import cn.changge.org.domain.Shop;
+import cn.changge.org.query.ShopQuery;
 import cn.changge.base.utils.AjaxResult;
 import cn.changge.base.utils.PageInfo;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/orgEmployee")
-@ChangGePermission(name = "员工管理")
-@Api("员工管理")
-public class OrgEmployeeController {
+@RequestMapping("/shop")
+public class ShopController {
     @Autowired
-    public IOrgEmployeeService orgEmployeeService;
+    public IShopService shopService;
 
 
     /**
      * 保存和修改公用的
-     * @param orgEmployee  传递的实体
+     * @param shop  传递的实体
      * @return Ajaxresult转换结果
      */
     @PutMapping
-    @ChangGePermission(name = "员工保存和新增")
-    public AjaxResult addOrUpdate(@RequestBody OrgEmployee orgEmployee){
+    public AjaxResult addOrUpdate(@RequestBody Shop shop){
         try {
-            if( orgEmployee.getId()!=null)
-                orgEmployeeService.update(orgEmployee);
+            if( shop.getId()!=null)
+                shopService.update(shop);
             else
-                orgEmployeeService.insert(orgEmployee);
+                shopService.insert(shop);
             return AjaxResult.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,10 +41,9 @@ public class OrgEmployeeController {
     * @return
     */
     @DeleteMapping(value="/{id}")
-    @ChangGePermission(name = "员工删除通过id")
     public AjaxResult delete(@PathVariable("id") Long id){
         try {
-            orgEmployeeService.delete(id);
+            shopService.delete(id);
             return AjaxResult.success();
         } catch (Exception e) {
         e.printStackTrace();
@@ -59,12 +53,11 @@ public class OrgEmployeeController {
 	
     //获取用户
     @GetMapping("/{id}")
-    @ChangGePermission(name = "员工获取通过id")
     public AjaxResult get(@PathVariable("id")Long id)
     {
         try {
-            OrgEmployee orgEmployee = orgEmployeeService.queryById(id);
-            return AjaxResult.success(orgEmployee);
+            Shop shop = shopService.queryById(id);
+            return AjaxResult.success(shop);
         } catch (Exception e) {
             e.printStackTrace();
            return AjaxResult.error();
@@ -77,11 +70,10 @@ public class OrgEmployeeController {
     * @return
     */
     @GetMapping
-    @ChangGePermission(name = "员工查找所有")
     public AjaxResult list(){
 
         try {
-            List< OrgEmployee> list = orgEmployeeService.queryAll();
+            List< Shop> list = shopService.queryAll();
             return AjaxResult.success(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,11 +89,10 @@ public class OrgEmployeeController {
     * @return PageList 分页对象
     */
     @PostMapping
-    @ChangGePermission(name = "员工分页查询")
-    public AjaxResult pageList(@RequestBody OrgEmployeeQuery query)
+    public AjaxResult pageList(@RequestBody ShopQuery query)
     {
         try {
-            PageInfo<OrgEmployee> pageList = orgEmployeeService.queryPage(query);
+            PageInfo<Shop> pageList = shopService.queryPage(query);
             return AjaxResult.success(pageList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,11 +104,10 @@ public class OrgEmployeeController {
    * 批量删除
    */
     @PatchMapping
-    @ChangGePermission(name = "员工批量删除")
     public AjaxResult batchDelete(@RequestBody List<Long> ids)
     {
         try {
-                orgEmployeeService.batchDelete(ids);
+                shopService.batchDelete(ids);
             return AjaxResult.success();
         } catch (Exception e) {
             e.printStackTrace();

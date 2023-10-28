@@ -4,19 +4,31 @@
     <!--保存对象-->
     <insert id="insert" parameterType="OrgEmployee" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_org_employee(
-                            username,
-                            password,
-                            email,
-                            headImage,
-                            age,
-                            department_id
+
+                        username,
+                        real_name,
+                        email,
+                        phone,
+                        salt,
+                        password,
+                        age,
+                        sex,
+                        `state`,
+                        department_id,
+                        logininfo_id,
+
         ) values(
                                    #{username},
-                                   #{password},
+                                   #{real_name},
                                    #{email},
-                                   #{headImage},
+                                   #{phone},
+                                   #{salt},
+                                   #{password}
                                    #{age},
-                                   #{department_id}
+                                   #{sex},
+                                   #{`state`},
+                                   #{department.id},
+                                   #{logininfo_id}
         )
     </insert>
     <!--删除对象-->
@@ -29,12 +41,17 @@
         update t_org_employee
         set
 
-                            username =#{username},
-                            password =#{password},
-                            email =#{email},
-                            headImage =#{headImage},
-                            age =#{age},
-                            department_id =#{department_id}
+                             username =#{username},
+                                  real_name =#{real_name},
+                                  email =#{email},
+                                  phone =#{phone},
+                                  salt =#{salt},
+                                  password =#{password}
+                                   age=#{age},
+                                  sex= #{sex},
+                                   `state`=#{`state`},
+                                  department_id =#{department.id},
+                                  logininfo_id= #{logininfo_id}
         where id = #{id}
     </update>
     <!--加载对象-->
@@ -43,7 +60,15 @@
     </select>
     <!--加载所有对象-->
     <select id="queryAll" resultType="OrgEmployee">
-        select * from t_org_employee
+                        SELECT
+                    e.* ,
+                    d.name
+
+                FROM
+                    t_org_employee e
+                    LEFT JOIN t_org_department d
+                    on
+                    e.department_id=d.id
     </select>
     <!--//查询总数=参数（查询对象），返回值：long-->
     <select id="queryTotal" parameterType="OrgEmployeeQuery" resultType="long">
@@ -52,7 +77,15 @@
     </select>
     <!--//查询当前页数据=参数（查询对象），返回值:List-->
     <select id="queryPage" parameterType="OrgEmployeeQuery" resultType="OrgEmployee">
-        select * from t_org_employee
+        SELECT
+        e.* ,
+        d.name
+
+        FROM
+        t_org_employee e
+        LEFT JOIN t_org_department d
+        on
+        e.department_id=d.id
         <include refid="whereSql"/>
         limit #{start},#{pageSize}
     </select>
@@ -82,14 +115,17 @@
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="email" property="email" />
-        <result column="headImage" property="headImage" />
+
         <result column="age" property="age" />
-        <result column="department_id" property="departmentId" />
+        <association property="department" javaType="department">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, username, password, email, headImage, age, department_id AS departmentId
+        id, username, password, email,  age, department_id AS department.id
     </sql>
 
 </mapper>

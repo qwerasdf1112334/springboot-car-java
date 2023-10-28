@@ -7,6 +7,7 @@ import cn.changge.org.domain.Department;
 import cn.changge.org.service.IDempartmentService;
 import cn.changge.org.vo.DepartmentVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class DepartmentController {
      **/
     @PutMapping
     @ChangGePermission(name = "部门管理保存和修改")
+    @ApiOperation(value = "部门管理保存和修改")
     public AjaxResult insertAndUpdate(@RequestBody Department department){
         try {
             if (Optional.ofNullable(department.getId()).isPresent()){
@@ -59,6 +61,7 @@ public class DepartmentController {
      * @return: cn.changge.base.utils.AjaxResult
      **/
     @ChangGePermission(name = "部门删除通过id")
+    @ApiOperation(value = "部门删除通过id")
     @DeleteMapping("/{id}")
     public AjaxResult delete(@PathVariable("id") Long id){
         try {
@@ -79,6 +82,7 @@ public class DepartmentController {
      **/
     @GetMapping("/{id}")
     @ChangGePermission(name = "部门管理查询通过id")
+    @ApiOperation(value ="部门管理查询通过id" )
     public AjaxResult findById(@PathVariable("id") Long id){
         try {
             return AjaxResult.success(service.queryById(id));
@@ -96,6 +100,7 @@ public class DepartmentController {
      **/
     @GetMapping
     @ChangGePermission(name = "部门管理查询所有")
+    @ApiOperation(value ="部门管理查询所有" )
     public AjaxResult findAll(){
         try {
             return AjaxResult.success(service.queryAll());
@@ -113,6 +118,7 @@ public class DepartmentController {
      **/
     @PostMapping
     @ChangGePermission(name = "部门管理分页查询")
+    @ApiOperation(value ="部门管理分页查询" )
     public AjaxResult pageList(@RequestBody DepartmentVo departmentVo){
         try {
             PageInfo<Department> pageInfo =service.queryPage(departmentVo);
@@ -132,6 +138,7 @@ public class DepartmentController {
      **/
     @PatchMapping
     @ChangGePermission(name = "部门管理批量删除")
+    @ApiOperation(value ="部门管理批量删除" )
     public AjaxResult batchDelete(@RequestBody List<Long> ids){
         try {
             service.batchDelete(ids);
