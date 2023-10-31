@@ -1,8 +1,8 @@
 package cn.changge.org.controller;
 
-import cn.changge.org.service.IShopService;
-import cn.changge.org.domain.Shop;
-import cn.changge.org.query.ShopQuery;
+import cn.changge.org.service.IShopEmployeeService;
+import cn.changge.org.domain.ShopEmployee;
+import cn.changge.org.query.ShopEmployeeQuery;
 import cn.changge.base.utils.AjaxResult;
 import cn.changge.base.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +11,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shop")
-public class ShopController {
+@RequestMapping("/shopEmployee")
+public class ShopEmployeeController {
     @Autowired
-    public IShopService shopService;
-    @PostMapping("/settlement")
-    public AjaxResult settlement(@RequestBody Shop shop)
-    {
-        try {
-            shopService.settlement(shop);
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error("入驻失败"+e.getMessage());
-        }
-    }
+    public IShopEmployeeService shopEmployeeService;
 
 
     /**
      * 保存和修改公用的
-     * @param shop  传递的实体
+     * @param shopEmployee  传递的实体
      * @return Ajaxresult转换结果
      */
     @PutMapping
-    public AjaxResult addOrUpdate(@RequestBody Shop shop){
+    public AjaxResult addOrUpdate(@RequestBody ShopEmployee shopEmployee){
         try {
-            if( shop.getId()!=null)
-                shopService.update(shop);
+            if( shopEmployee.getId()!=null)
+                shopEmployeeService.update(shopEmployee);
             else
-                shopService.insert(shop);
+                shopEmployeeService.insert(shopEmployee);
             return AjaxResult.success();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +43,7 @@ public class ShopController {
     @DeleteMapping(value="/{id}")
     public AjaxResult delete(@PathVariable("id") Long id){
         try {
-            shopService.delete(id);
+            shopEmployeeService.delete(id);
             return AjaxResult.success();
         } catch (Exception e) {
         e.printStackTrace();
@@ -67,8 +56,8 @@ public class ShopController {
     public AjaxResult get(@PathVariable("id")Long id)
     {
         try {
-            Shop shop = shopService.queryById(id);
-            return AjaxResult.success(shop);
+            ShopEmployee shopEmployee = shopEmployeeService.queryById(id);
+            return AjaxResult.success(shopEmployee);
         } catch (Exception e) {
             e.printStackTrace();
            return AjaxResult.error();
@@ -84,7 +73,7 @@ public class ShopController {
     public AjaxResult list(){
 
         try {
-            List< Shop> list = shopService.queryAll();
+            List< ShopEmployee> list = shopEmployeeService.queryAll();
             return AjaxResult.success(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,10 +89,10 @@ public class ShopController {
     * @return PageList 分页对象
     */
     @PostMapping
-    public AjaxResult pageList(@RequestBody ShopQuery query)
+    public AjaxResult pageList(@RequestBody ShopEmployeeQuery query)
     {
         try {
-            PageInfo<Shop> pageList = shopService.queryPage(query);
+            PageInfo<ShopEmployee> pageList = shopEmployeeService.queryPage(query);
             return AjaxResult.success(pageList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +107,7 @@ public class ShopController {
     public AjaxResult batchDelete(@RequestBody List<Long> ids)
     {
         try {
-                shopService.batchDelete(ids);
+                shopEmployeeService.batchDelete(ids);
             return AjaxResult.success();
         } catch (Exception e) {
             e.printStackTrace();

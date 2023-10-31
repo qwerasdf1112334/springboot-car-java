@@ -2,6 +2,9 @@ package cn.changge.org.domain;
 
 import cn.changge.base.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,9 +18,20 @@ import java.util.Date;
  * @author wangxi
  * @since 2023-10-28
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Shop extends BaseDomain {
 
     private static final long serialVersionUID = 1L;
+    /**待审核 **/
+    public static final int STATE_WAIT_AUTID = 1 ; //"待审核";
+    /**审核通过，待激活 **/
+    public static final int STATE_WAIT_ACTIVE = 2 ; //"审核通过，待激活";
+    /**激活成功 **/
+    public static final int STATE_ACTIVE_SUCCESS = 3 ; //"激活成功";
+    /**驳回 **/
+    public static final int STATE_REJECT_AUDIT = 4 ; //"驳回";
 
     private Long id;
     private String name;
@@ -31,73 +45,14 @@ public class Shop extends BaseDomain {
     private String address;
     private String logo;
 
+    /** 店铺管理 **/
+    private OrgEmployee admin;
+    /**纬度**/
+   private Double lat;
+    /**经度**/
+    private Double      lng;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public Date getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Date registerTime) {
-        this.registerTime = registerTime;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    @Override
-    public String toString() {
-        return "Shop{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", tel=" + tel +
-        ", registerTime=" + registerTime +
-        ", state=" + state +
-        ", address=" + address +
-        ", logo=" + logo +
-        "}";
-    }
 }

@@ -31,6 +31,6 @@ public class APP implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authPermInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login","/loginOut");
+                .excludePathPatterns("/login","/loginOut","/shop/settlement");
     }
 }

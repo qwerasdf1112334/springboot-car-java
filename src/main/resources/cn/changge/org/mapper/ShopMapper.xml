@@ -9,14 +9,18 @@
                             registerTime,
                             state,
                             address,
-                            logo
+                            logo,
+                            lat,
+                            lng
         ) values(
                                    #{name},
                                    #{tel},
                                    NOW(),
                                    #{state},
                                    #{address},
-                                   #{logo}
+                                   #{logo},
+                                   #{lat},
+                                   #{lng}
         )
     </insert>
     <!--删除对象-->
@@ -34,7 +38,9 @@
                             registerTime =#{registerTime},
                             state =#{state},
                             address =#{address},
-                            logo =#{logo}
+                            logo =#{logo},
+                              lat=    #{lat},
+                               lng=    #{lng}
         where id = #{id}
     </update>
     <!--加载对象-->
