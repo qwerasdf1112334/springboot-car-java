@@ -6,6 +6,8 @@ import cn.changge.base.utils.PageInfo;
 import cn.changge.org.domain.Department;
 import cn.changge.org.domain.ExcelEmployee;
 import cn.changge.org.vo.DepartmentVo;
+import org.csource.common.MyException;
+import org.csource.fastdfs.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +90,8 @@ public class DepServiceTest {
         excelEmployees.add(excelEmployee1);
         excelService.batchInsertEmployees(excelEmployees);
     }
+
+
 
 
     }

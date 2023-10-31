@@ -3,7 +3,7 @@ package ${package.Controller};
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 import ${cfg.parent}.query.${entity}Query;
-import cn.changge.base.utils.AjaxResult;
+import cn.changge.base.utils.AxiosResult;
 import cn.changge.base.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +23,14 @@ public class ${entity}Controller {
      * @return Ajaxresult转换结果
      */
     @PutMapping
-    public AjaxResult addOrUpdate(@RequestBody ${entity} ${table.entityPath}){
-        try {
+    public AxiosResult addOrUpdate(@RequestBody ${entity} ${table.entityPath}){
+       
             if( ${table.entityPath}.getId()!=null)
                 ${table.entityPath}Service.update(${table.entityPath});
             else
                 ${table.entityPath}Service.insert(${table.entityPath});
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+            return AxiosResult.me().setSuccess(true);
+  
     }
     /**
     * 删除对象信息
@@ -41,27 +38,21 @@ public class ${entity}Controller {
     * @return
     */
     @DeleteMapping(value="/{id}")
-    public AjaxResult delete(@PathVariable("id") Long id){
-        try {
+    public AxiosResult delete(@PathVariable("id") Long id){
+
             ${table.entityPath}Service.delete(id);
-            return AjaxResult.success();
-        } catch (Exception e) {
-        e.printStackTrace();
-            return AjaxResult.error();
-        }
+            return AxiosResult.me().setSuccess(true);
+      
     }
 	
     //获取用户
     @GetMapping("/{id}")
-    public AjaxResult get(@PathVariable("id")Long id)
+    public AxiosResult get(@PathVariable("id")Long id)
     {
         try {
             ${entity} ${table.entityPath} = ${table.entityPath}Service.queryById(id);
-            return AjaxResult.success(${table.entityPath});
-        } catch (Exception e) {
-            e.printStackTrace();
-           return AjaxResult.error();
-        }
+            return AxiosResult.me().setResultObj(${table.entityPath});
+       
     }
 
 
@@ -70,15 +61,12 @@ public class ${entity}Controller {
     * @return
     */
     @GetMapping
-    public AjaxResult list(){
+    public AxiosResult list(){
 
-        try {
+        
             List< ${entity}> list = ${table.entityPath}Service.queryAll();
-            return AjaxResult.success(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+            return AxiosResult.me().setSuccess(true).setResultObj(list);
+       
     }
 
 
@@ -89,29 +77,23 @@ public class ${entity}Controller {
     * @return PageList 分页对象
     */
     @PostMapping
-    public AjaxResult pageList(@RequestBody ${entity}Query query)
+    public AxiosResult pageList(@RequestBody ${entity}Query query)
     {
-        try {
+        
             PageInfo<${entity}> pageList = ${table.entityPath}Service.queryPage(query);
-            return AjaxResult.success(pageList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+            return  AxiosResult.me().setSuccess(true).setResultObj(pageList);
+       
     }
 
     /**
    * 批量删除
    */
     @PatchMapping
-    public AjaxResult batchDelete(@RequestBody List<Long> ids)
+    public AxiosResult batchDelete(@RequestBody List<Long> ids)
     {
-        try {
+
                 ${table.entityPath}Service.batchDelete(ids);
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+            return AxiosResult.me().setSuccess(true);
+
     }
 }

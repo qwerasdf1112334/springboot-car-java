@@ -1,13 +1,16 @@
 package cn.changge.org.controller;
 
+import cn.changge.base.enums.ResponseCode;
+import cn.changge.base.utils.AxiosResult;
 import cn.changge.org.service.IShopService;
 import cn.changge.org.domain.Shop;
 import cn.changge.org.query.ShopQuery;
-import cn.changge.base.utils.AjaxResult;
+import cn.changge.base.utils.AxiosResult;
 import cn.changge.base.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -15,114 +18,99 @@ import java.util.List;
 public class ShopController {
     @Autowired
     public IShopService shopService;
+
     @PostMapping("/settlement")
-    public AjaxResult settlement(@RequestBody Shop shop)
-    {
-        try {
-            shopService.settlement(shop);
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error("入驻失败"+e.getMessage());
-        }
+    public AxiosResult settlement(@RequestBody @Valid Shop shop) {
+
+        shopService.settlement(shop);
+        return AxiosResult.me().setSuccess(true).setMessage("入驻成功");
+
     }
 
 
     /**
      * 保存和修改公用的
-     * @param shop  传递的实体
+     *
+     * @param shop 传递的实体
      * @return Ajaxresult转换结果
      */
     @PutMapping
-    public AjaxResult addOrUpdate(@RequestBody Shop shop){
-        try {
-            if( shop.getId()!=null)
-                shopService.update(shop);
-            else
-                shopService.insert(shop);
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+    public AxiosResult addOrUpdate(@RequestBody Shop shop) {
+
+        if (shop.getId() != null)
+            shopService.update(shop);
+        else
+            shopService.insert(shop);
+        return AxiosResult.me().setSuccess(true);
+
+
     }
+
     /**
-    * 删除对象信息
-    * @param id
-    * @return
-    */
-    @DeleteMapping(value="/{id}")
-    public AjaxResult delete(@PathVariable("id") Long id){
-        try {
-            shopService.delete(id);
-            return AjaxResult.success();
-        } catch (Exception e) {
-        e.printStackTrace();
-            return AjaxResult.error();
-        }
+     * 删除对象信息
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value = "/{id}")
+    public AxiosResult delete(@PathVariable("id") Long id) {
+
+        shopService.delete(id);
+        return AxiosResult.me().setSuccess(true);
+
     }
-	
+
     //获取用户
     @GetMapping("/{id}")
-    public AjaxResult get(@PathVariable("id")Long id)
-    {
-        try {
-            Shop shop = shopService.queryById(id);
-            return AjaxResult.success(shop);
-        } catch (Exception e) {
-            e.printStackTrace();
-           return AjaxResult.error();
-        }
+    public AxiosResult get(@PathVariable("id") Long id) {
+
+        Shop shop = shopService.queryById(id);
+        return AxiosResult.me().setSuccess(true).setData(shop);
+
     }
 
 
     /**
-    * 查看所有的员工信息
-    * @return
-    */
+     * 查看所有的员工信息
+     *
+     * @return
+     */
     @GetMapping
-    public AjaxResult list(){
+    public AxiosResult list() {
 
-        try {
-            List< Shop> list = shopService.queryAll();
-            return AjaxResult.success(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+
+        List<Shop> list = shopService.queryAll();
+
+        return AxiosResult.me().setSuccess(true).setData(list);
+
+
     }
 
 
     /**
-    * 分页查询数据
-    *
-    * @param query 查询对象
-    * @return PageList 分页对象
-    */
+     * 分页查询数据
+     *
+     * @param query 查询对象
+     * @return PageList 分页对象
+     */
     @PostMapping
-    public AjaxResult pageList(@RequestBody ShopQuery query)
-    {
-        try {
-            PageInfo<Shop> pageList = shopService.queryPage(query);
-            return AjaxResult.success(pageList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+    public AxiosResult pageList(@RequestBody ShopQuery query) {
+
+        PageInfo<Shop> pageList = shopService.queryPage(query);
+
+        return AxiosResult.me().setSuccess(true).setData(pageList);
+
     }
 
     /**
-   * 批量删除
-   */
+     * 批量删除
+     */
     @PatchMapping
-    public AjaxResult batchDelete(@RequestBody List<Long> ids)
-    {
-        try {
-                shopService.batchDelete(ids);
-            return AjaxResult.success();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return AjaxResult.error();
-        }
+    public AxiosResult batchDelete(@RequestBody List<Long> ids) {
+
+        shopService.batchDelete(ids);
+        return AxiosResult.me().setSuccess(true);
+
+
     }
 }

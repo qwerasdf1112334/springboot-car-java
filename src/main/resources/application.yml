@@ -18,3 +18,6 @@ mybatis:
 Changge:
   Permission:
     scan-package: cn.changge.auth.controller,cn.changge.org.controller
+
+fastdfs:
+  url: http://115.159.217.249:8888
