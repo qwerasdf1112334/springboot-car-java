@@ -6,6 +6,16 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        max-wait: 2000ms
+        min-idle: 2
+        max-idle: 8
 mybatis:
   type-aliases-package: cn.changge.org.domain,
                         cn.changge.org.query,
@@ -13,6 +23,8 @@ mybatis:
                         cn.changge.auth.query,
                         cn.changge.test.domain,
                         cn.changge.test.query,
+                        cn.changge.car.domain,
+                        cn.changge.car.query,
 
 
 Changge:

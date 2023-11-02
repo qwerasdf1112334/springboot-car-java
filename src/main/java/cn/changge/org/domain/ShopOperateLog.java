@@ -1,6 +1,10 @@
 package cn.changge.org.domain;
 
 import cn.changge.base.domain.BaseDomain;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,12 +18,15 @@ import java.util.Date;
  * @author wangxi
  * @since 2023-10-30
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ShopOperateLog extends BaseDomain {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long shopId;
+    private Shop shop;
     /**
      * 操作类型:1=入驻 2=审核成功 3=审核驳回 4=激活
      */
@@ -31,6 +38,7 @@ public class ShopOperateLog extends BaseDomain {
     /**
      * 操作时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = ("GMT+8"))
     private Date operateTime;
     /**
      * 备注
@@ -38,63 +46,5 @@ public class ShopOperateLog extends BaseDomain {
     private String note;
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
-
-    public Integer getOperateType() {
-        return operateType;
-    }
-
-    public void setOperateType(Integer operateType) {
-        this.operateType = operateType;
-    }
-
-    public Long getOperateId() {
-        return operateId;
-    }
-
-    public void setOperateId(Long operateId) {
-        this.operateId = operateId;
-    }
-
-    public Date getOperateTime() {
-        return operateTime;
-    }
-
-    public void setOperateTime(Date operateTime) {
-        this.operateTime = operateTime;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    @Override
-    public String toString() {
-        return "ShopOperateLog{" +
-        ", id=" + id +
-        ", shopId=" + shopId +
-        ", operateType=" + operateType +
-        ", operateId=" + operateId +
-        ", operateTime=" + operateTime +
-        ", note=" + note +
-        "}";
-    }
 }

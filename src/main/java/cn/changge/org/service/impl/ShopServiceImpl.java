@@ -8,8 +8,10 @@ import cn.changge.base.utils.Point;
 import cn.changge.org.domain.OrgEmployee;
 import cn.changge.org.domain.Shop;
 import cn.changge.org.domain.ShopEmployee;
+import cn.changge.org.domain.ShopOperateLog;
 import cn.changge.org.mapper.OrgEmployeeMapper;
 import cn.changge.org.mapper.ShopEmployeeMapper;
+import cn.changge.org.mapper.ShopOperateLogMapper;
 import cn.changge.org.service.IShopService;
 import cn.changge.base.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop> implements IShopServi
     private OrgEmployeeMapper orgEmployeeMapper;
     @Autowired
     private ShopEmployeeMapper shopEmployeeMapper;
+    @Autowired
+    private ShopOperateLogMapper shopOperateLogMapper;
     private int autoAuditCount = 0;
     private static final int MAX_AUTO_AUDIT_COUNT = 3;
 
@@ -74,12 +78,18 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop> implements IShopServi
     public void audit(Shop shop) {
         // 如果已经超过3次自动审核，则执行手动审核
         if (autoAuditCount >= MAX_AUTO_AUDIT_COUNT) {
-         //   manualAudit(shop);
+            manualAudit(shop);
         } else {
             // 执行自动审核
             Map<String, Object> textCensor = BaiduAuditUtils.textCensor(shop.getName());
 
-            if (Boolean.valueOf(textCensor.get("success").toString())) {
+            if (Boolean.valueOf(textCensor.get("success").toString())) {        ShopOperateLog shopOperateLog = new ShopOperateLog();
+                shopOperateLog.setNote("");
+                shopOperateLog.setShop(shop);
+                shopOperateLog.setOperateType(shop.STATE_WAIT_ACTIVE);//设置为审核通过，待激活
+                shopOperateLog.setNote("系统自动审核通过");
+                shopOperateLogMapper.insert(shopOperateLog);
+
                 // 通过审核
                 autoAuditCount = 0; // 重置自动审核计数
             } else {
@@ -88,6 +98,15 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop> implements IShopServi
                 throw new RuntimeException(textCensor.get("message").toString());
             }
         }
+    }
+    //手动审核
+    public  void manualAudit(Shop shop){
+        ShopOperateLog shopOperateLog = new ShopOperateLog();
+        shopOperateLog.setNote("");
+        shopOperateLog.setShop(shop);
+        shopOperateLog.setOperateType(shop.STATE_WAIT_AUTID);//设置为待审核
+        shopOperateLogMapper.insert(shopOperateLog);
+
     }
     public void validate(Shop shop){
 //        //1.非空校验
