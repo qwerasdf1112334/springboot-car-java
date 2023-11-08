@@ -42,7 +42,7 @@ public class GenteratorCode {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setTablePrefix(new String[] { "t_car_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[]{"t_car_car_type"
+        strategy.setInclude(new String[]{"t_car_car","t_car_car_detail","t_car_car_online_audit_log","t_car_car_resources"
                }); // 需要生成的表
         strategy.setSuperEntityClass("cn.changge.base.domain.BaseDomain");
         strategy.setSuperServiceClass("cn.changge.base.service.BaseService");

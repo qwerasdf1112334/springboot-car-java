@@ -25,9 +25,11 @@ public class BaiduAuditUtils {
      */
     public static String getAuth() {
         // 官网获取的 API Key 更新为你注册的
-        String clientId = "YENQvtXlXWjOEqvAE4RwPZAv";
+       // String clientId = "YENQvtXlXWjOEqvAE4RwPZAv";
+        String clientId = "mkI1gqU1V3560mS8GayUZOTh";
         // 官网获取的 Secret Key 更新为你注册的
-        String clientSecret = "DhZPIHdV0aAFmFAQDH2aQ0jjqTqL8SxB";
+      //  String clientSecret = "DhZPIHdV0aAFmFAQDH2aQ0jjqTqL8SxB";
+        String clientSecret = "cvM9oI4Zkn7O1kgqG8fTetGtuOnsCG2h";
         return getAuth(clientId, clientSecret);
     }
 
@@ -107,13 +109,14 @@ public class BaiduAuditUtils {
             }else {
                 String dataStr =  jsonObject.getString("data");
                 JSONArray jsonArray = JSONObject.parseArray(dataStr);
-                String errorMsg= jsonArray.getJSONObject(0).getString("msg");
+                String errorMsg= jsonArray.getJSONObject(0).getString("error_msg");
                 map.put("success",false);
                 map.put("message",errorMsg);
                 return map;
             }
         } catch (Exception e) {
             e.printStackTrace();
+
         }
         return null;
     }

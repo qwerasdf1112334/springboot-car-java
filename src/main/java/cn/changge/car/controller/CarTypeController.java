@@ -1,5 +1,6 @@
 package cn.changge.car.controller;
 
+import cn.changge.base.utils.AjaxResult;
 import cn.changge.car.service.ICarTypeService;
 import cn.changge.car.domain.CarType;
 import cn.changge.car.query.CarTypeQuery;
@@ -78,6 +79,16 @@ public class CarTypeController {
         List< CarType> list = carTypeService.treeData();
 
         return AxiosResult.me().setSuccess(true).setData(list);
+
+    }
+    /**
+     用来加载树形列表
+     */
+    @GetMapping("/getTypes")
+    public AxiosResult getTypes()
+    {
+        List<CarType> list= carTypeService.getTypes();
+        return AxiosResult.me().setData(list);
 
     }
 

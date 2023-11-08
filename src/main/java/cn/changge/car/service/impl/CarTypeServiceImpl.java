@@ -32,7 +32,7 @@ public class CarTypeServiceImpl extends BaseServiceImpl<CarType> implements ICar
     private RedisTemplate redisTemplate;
 
     @Override
-    @Cacheable(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
+ //   @Cacheable(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
     public List<CarType> treeData() {
 //        List<CarType> values = (List<CarType>)redisTemplate.opsForValue().get(SystemConstants.TREE_TYPE);//拿到redis存的数据
 //        if (values!=null){
@@ -60,6 +60,12 @@ public class CarTypeServiceImpl extends BaseServiceImpl<CarType> implements ICar
         return arrayList;
      //   return treeDataRecursion(0l);
     }
+
+    @Override
+    public List<CarType> getTypes() {
+        return carTypeMapper.queryByPid(0L);
+    }
+
     //递归查询
     private List<CarType> treeDataRecursion(Long pid){
         List<CarType> carTypes = carTypeMapper.queryByPid(pid);//查找顶级父类pid为0l
@@ -72,21 +78,21 @@ public class CarTypeServiceImpl extends BaseServiceImpl<CarType> implements ICar
         return carTypes;
     }
 
-    @Override
-    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
-    public void insert(CarType carType) {
-        super.insert(carType);
-    }
-
-    @Override
-    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
-    public void delete(Serializable id) {
-        super.delete(id);
-    }
-
-    @Override
-    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
-    public void update(CarType carType) {
-        super.update(carType);
-    }
+//    @Override
+//    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
+//    public void insert(CarType carType) {
+//        super.insert(carType);
+//    }
+//
+//    @Override
+//    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
+//    public void delete(Serializable id) {
+//        super.delete(id);
+//    }
+//
+//    @Override
+//    @CacheEvict(cacheNames = SystemConstants.TREE_TYPE,key = "'ALL'")
+//    public void update(CarType carType) {
+//        super.update(carType);
+//    }
 }

@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -89,6 +91,26 @@ public class DepServiceTest {
         excelEmployees.add(excelEmployee2);
         excelEmployees.add(excelEmployee1);
         excelService.batchInsertEmployees(excelEmployees);
+    }
+
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Test
+    public void testSimpleEmail(){
+        //邮件对象
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        //设置发件人
+        simpleMailMessage.setFrom("1678825097@qq.com");
+        //设置收件人
+        simpleMailMessage.setTo("1714422316@qq.com");
+        //设置主题
+        simpleMailMessage.setSubject("拒绝闲聊,直入正题");
+        //设置正文
+        simpleMailMessage.setText("+mmq 20982314");
+        //发送邮件
+        javaMailSender.send(simpleMailMessage);
     }
 
 

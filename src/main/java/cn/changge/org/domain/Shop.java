@@ -52,12 +52,14 @@ public class Shop extends BaseDomain {
     private String logo;
 
     /** 店铺管理 **/
-    @NotNull(message = "管理员")
+    //l@NotNull(message = "管理员")
     private OrgEmployee admin;
     /**纬度**/
    private Double lat;
     /**经度**/
     private Double      lng;
+    /*前端传驳回原因时使用*/
+    private String msg;
 
 
 

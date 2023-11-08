@@ -62,6 +62,9 @@
         <include refid="whereSql"/>
         limit #{start},#{pageSize}
     </select>
+    <select id="queryByEmpId" resultType="cn.changge.org.domain.Shop">
+        select * from t_org_shop s left join t_org_shop_employee tose on s.id = tose.shop_id where tose.employee_id=#{id};
+    </select>
 
 
     <sql id="whereSql">

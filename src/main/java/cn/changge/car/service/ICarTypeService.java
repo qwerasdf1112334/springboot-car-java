@@ -16,4 +16,6 @@ import java.util.List;
 public interface ICarTypeService extends BaseService<CarType> {
 
     List<CarType> treeData();
+
+    List<CarType> getTypes();
 }

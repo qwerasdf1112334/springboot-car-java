@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.changge.car.mapper.CarOnlineAuditLogMapper">
+    <!--保存对象-->
+    <insert id="insert" parameterType="CarOnlineAuditLog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_car_car_online_audit_log(
+                            car_id,
+                            state,
+                            audit_id,
+                            audit_time,
+                            note
+        ) values(
+                                   #{car_id},
+                                   #{state},
+                                   #{audit_id},
+                                   #{audit_time},
+                                   #{note}
+        )
+    </insert>
+    <!--删除对象-->
+    <delete id="delete" parameterType="long">
+        delete from t_car_car_online_audit_log where id = #{id}
+    </delete>
+
+    <!--更新对象-->
+    <update id="update" parameterType="CarOnlineAuditLog">
+        update t_car_car_online_audit_log
+        set
+
+                            car_id =#{car_id},
+                            state =#{state},
+                            audit_id =#{audit_id},
+                            audit_time =#{audit_time},
+                            note =#{note}
+        where id = #{id}
+    </update>
+    <!--加载对象-->
+    <select id="queryById" resultType="CarOnlineAuditLog" parameterType="long">
+        select * from t_car_car_online_audit_log where id = #{id}
+    </select>
+    <!--加载所有对象-->
+    <select id="queryAll" resultType="CarOnlineAuditLog">
+        select * from t_car_car_online_audit_log
+    </select>
+    <!--//查询总数=参数（查询对象），返回值：long-->
+    <select id="queryTotal" parameterType="CarOnlineAuditLogQuery" resultType="long">
+        select count(*) from t_car_car_online_audit_log
+        <include refid="whereSql"/>
+    </select>
+    <!--//查询当前页数据=参数（查询对象），返回值:List-->
+    <select id="queryPage" parameterType="CarOnlineAuditLogQuery" resultType="CarOnlineAuditLog">
+        select * from t_car_car_online_audit_log
+        <include refid="whereSql"/>
+        limit #{start},#{pageSize}
+    </select>
+
+
+    <sql id="whereSql">
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (name like concat('%',#{keyword},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <!--//批量删除-->
+    <delete id="batchDelete" parameterType="arraylist">
+        delete from t_car_car_online_audit_log where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.changge.car.domain.CarOnlineAuditLog">
+        <id column="id" property="id" />
+        <result column="car_id" property="carId" />
+        <result column="state" property="state" />
+        <result column="audit_id" property="auditId" />
+        <result column="audit_time" property="auditTime" />
+        <result column="note" property="note" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, car_id AS carId, state, audit_id AS auditId, audit_time AS auditTime, note
+    </sql>
+
+</mapper>

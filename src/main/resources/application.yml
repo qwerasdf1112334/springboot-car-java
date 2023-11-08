@@ -6,6 +6,10 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    username: 1678825097@qq.com
+    password: kvzbttysyhdqhejf
   redis:
     database: 0
     host: 127.0.0.1
@@ -16,6 +20,9 @@ spring:
         max-wait: 2000ms
         min-idle: 2
         max-idle: 8
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
 mybatis:
   type-aliases-package: cn.changge.org.domain,
                         cn.changge.org.query,
@@ -32,4 +39,7 @@ Changge:
     scan-package: cn.changge.auth.controller,cn.changge.org.controller
 
 fastdfs:
-  url: http://115.159.217.249:8888
+  url: http://47.108.114.231:8888
+velocity:
+  templatePath: D:\\javaclasspath\\springboot-car-java\\src\\main\\resources\\vmtemplates\\carDetail.vm
+  targetPath: D:\\javaclasspath\\baobaocar-parent\\baobaocar-website\\detail\\

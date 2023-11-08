@@ -13,4 +13,5 @@ import cn.changge.base.mapper.BaseMapper;
  */
 public interface ShopMapper extends BaseMapper<Shop> {
 
+    Shop queryByEmpId(Long id);
 }

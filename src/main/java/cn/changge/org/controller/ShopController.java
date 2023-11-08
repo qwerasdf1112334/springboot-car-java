@@ -26,6 +26,16 @@ public class ShopController {
         return AxiosResult.me().setSuccess(true).setMessage("入驻成功");
 
     }
+    @PostMapping("/shenhe")
+    public AxiosResult shenHe(@RequestBody  Shop shop) {
+
+            shopService.shenHe(shop);
+
+
+
+        return AxiosResult.me().setSuccess(true);
+
+    }
 
 
     /**

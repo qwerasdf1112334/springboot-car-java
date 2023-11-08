@@ -142,6 +142,19 @@
             <artifactId>jedis</artifactId>
         </dependency>
 
+        <!--导入es-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
+        <!--对邮件的支持jar-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+
 
     </dependencies>
     <build>

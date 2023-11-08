@@ -51,7 +51,7 @@ public class ${entity}Controller {
     {
 
             ${entity} ${table.entityPath} = ${table.entityPath}Service.queryById(id);
-            return AxiosResult.me().setResultObj(${table.entityPath});
+            return AxiosResult.me().setData(${table.entityPath});
        
     }
 
@@ -65,7 +65,7 @@ public class ${entity}Controller {
 
         
             List< ${entity}> list = ${table.entityPath}Service.queryAll();
-            return AxiosResult.me().setSuccess(true).setResultObj(list);
+            return AxiosResult.me().setSuccess(true).setData(list);
        
     }
 
@@ -81,7 +81,7 @@ public class ${entity}Controller {
     {
         
             PageInfo<${entity}> pageList = ${table.entityPath}Service.queryPage(query);
-            return  AxiosResult.me().setSuccess(true).setResultObj(pageList);
+            return  AxiosResult.me().setSuccess(true).setData(pageList);
        
     }
 

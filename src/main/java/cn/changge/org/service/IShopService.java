@@ -14,4 +14,6 @@ import cn.changge.base.service.BaseService;
 public interface IShopService extends BaseService<Shop> {
 
     void settlement(Shop shop);
+
+    void shenHe(Shop shop);
 }
