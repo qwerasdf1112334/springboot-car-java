@@ -29,6 +29,8 @@ public class APP implements WebMvcConfigurer {
     @Autowired
     private AuthPermInterceptor authPermInterceptor;
 
+
+
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(authPermInterceptor)
